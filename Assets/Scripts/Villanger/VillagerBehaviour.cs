@@ -25,8 +25,7 @@ namespace Villanger
   
         private string name;
         private int age;
-    
-    
+        
         public Gender gender = Gender.female;
 
         public enum Gender
@@ -38,9 +37,6 @@ namespace Villanger
         [SerializeField] private Transform target;
         [SerializeField] private NavMeshAgent agent;
 
-        public Text text;
-
-        [SerializeField][Range(0f,100f)] public float hunger = 100;
 
         [SerializeField][Range(0,4)] public int priority = 0;
 
