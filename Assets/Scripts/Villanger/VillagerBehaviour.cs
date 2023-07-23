@@ -1,7 +1,6 @@
 using ScriptableObjects;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
 namespace Villanger
@@ -21,6 +20,7 @@ namespace Villanger
     
         private bool isActive = true;
         private VillagerNeeds villagerNeeds;
+        private VillagerInventory villagerInventory;
 
   
         private string name;
@@ -36,19 +36,13 @@ namespace Villanger
 
         [SerializeField] private Transform target;
         [SerializeField] private NavMeshAgent agent;
-
-
-        [SerializeField][Range(0,4)] public int priority = 0;
-
-
-        private string[] priorityValues = { "gather food for the village", "get shelter", "get enough food for myself", "find a mate and mate", "explore the world and science" };
-
-        public GameObject dialogGUI;
-
+        
+        
         private void Awake()
         {
             villagerNeeds = new VillagerNeeds( this, villagerNeedsSettings );
             villagerNeeds.Initialize();
+            villagerInventory = new VillagerInventory(10);
         }
 
         // Start is called before the first frame update
@@ -65,15 +59,6 @@ namespace Villanger
             // since gender is going to be assigned during villager procreation
             // to the fresh insantiated villager object.
 
-            if (gender == Gender.female)
-            {
-                // string n0 = femaleNames[Random.Range(0, femaleNames.Length)];
-                // villagerName = n0 + " " + femaleNames[Random.Range(0, femaleNames.Length)];
-            } else if (gender == Gender.male)
-            {
-                //  string n0 = maleNames[Random.Range(0, maleNames.Length)];
-                // villagerName = n0 + " " + maleNames[Random.Range(0, maleNames.Length)];
-            }
 
         }
 
@@ -84,58 +69,7 @@ namespace Villanger
             {
                 agent.SetDestination(target.position);
             }
-
-            switch (priority)
-            {
-                case 0:
-                    WorkOnGettingGroupFood();
-                    break;
-                case 1:
-                    WorkOnGettingShelter();
-                    break;
-                case 2:
-                    WorkOnGettingPrivateFood();
-                    break;
-                case 3:
-                    WorkOnGettingMate();
-                    break;
-                case 4:
-                    WorkOnGettingExploration();
-                    break;
-            }
-        }
-
-        private void OnMouseDown()
-        {
-            /*if (!dialogGUI.activeSelf)
-        {
-          //  displayThoughts();
-        }*/
-        }
-    
-
-        /// <summary>
-        /// This function is to be called when the villager is clicked to show their
-        /// thoughts - their top priority, their current task, (maybe) their mood and
-        /// a splash text.
-        /// </summary>
-        private void displayThoughts()
-        {
-            dialogGUI.SetActive(true);
-
-            for (int i = 0; i < dialogGUI.transform.childCount; i++)
-            {
-                if (dialogGUI.transform.GetChild(i).gameObject.name == "ThoughtText")
-                {
-                    string thought = ""; //"\"" + splashesList[Random.Range(0, splashesList.Length)] + "\"\nMy top priority now is to " + priorityValues[priority] + "."; 
-
-                    dialogGUI.transform.GetChild(i).gameObject.GetComponent<Text>().text = thought;
-                    continue;
-                } else if (dialogGUI.transform.GetChild(i).gameObject.name == "VillagerName")
-                {
-                    dialogGUI.transform.GetChild(i).gameObject.GetComponent<Text>().text = name;
-                }
-            }
+            
         }
 
         /// <summary>
@@ -235,11 +169,13 @@ namespace Villanger
         }
 
         public VillagerNeeds GetVillagerNeeds() => villagerNeeds;
-
+        public VillagerInventory GetVillagerInventory() => villagerInventory;
         public bool GetIsActive() => isActive;
         public string GetName() => name;
         public int GetAge() => age;
 
         public Gender GetGender() => gender;
+        
+        public NavMeshAgent GetAgent() => agent;
     }
 }

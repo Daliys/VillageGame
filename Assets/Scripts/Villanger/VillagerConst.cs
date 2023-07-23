@@ -1,17 +1,18 @@
 public static class VillagerConst
 {
- 
-    public static string[] VillagerFemaleNames =
+
+    public static readonly string[] VillagerFemaleNames =
     {
         "Maria", "Johanna", "Athena", "Hannah", "Skyler"
     };
-    
-    public static string[] VillagerMaleNames =
+
+    public static readonly string[] VillagerMaleNames =
     {
         "Martin", "Walter", "John", "Andrew", "White", "Saul"
     };
-    
-    public static string[] SplashesList = {
+
+    public static readonly string[] SplashesList =
+    {
         "I've got a lot on my mind tonight.",
         "I wish pizza was a thing in my world.",
         "Why aren't there any hedgehogs in here?",
@@ -29,6 +30,7 @@ public static class VillagerConst
         "I'm glad gods didn't add taxes here. Hell, those legends are terrifying.",
         "You are charming. Just joking, you make me want to become infertile.",
         "I want to uhh, uhh.. uhh... Ah! wait... um... Oh yeah!",
-        "Me thinking what to do.."};
+        "Me thinking what to do.."
+    };
 
 }
