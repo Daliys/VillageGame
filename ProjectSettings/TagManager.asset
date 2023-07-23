@@ -9,6 +9,7 @@ TagManager:
   - Hut
   - Terrain
   - Villager
+  - AppleTree
   layers:
   - Default
   - TransparentFX
