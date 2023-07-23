@@ -2,10 +2,11 @@ namespace Villanger.BehaviorTree.Tasks
 {
     public class GatherFoodTask : BehaviorTask
     {
-
+        
+        
         public GatherFoodTask(IGatherable gatherableObject)
         {
-            
+
         }
         
         public override void Start()
