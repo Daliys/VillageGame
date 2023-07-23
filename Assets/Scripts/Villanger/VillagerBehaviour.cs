@@ -105,7 +105,7 @@ namespace Villanger
         {
             if (collision.gameObject.transform == target)
             {
-                target = null;
+                target = gameObject.transform;
             }
         }
 
