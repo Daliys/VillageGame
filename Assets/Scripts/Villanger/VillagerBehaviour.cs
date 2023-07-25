@@ -22,7 +22,7 @@ namespace Villanger
         private VillagerNeeds villagerNeeds;
         private VillagerInventory villagerInventory;
 
-  
+
         private string name;
         private int age;
         

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Villanger
+namespace ItemResources
 {
     public interface IGatherable
     {

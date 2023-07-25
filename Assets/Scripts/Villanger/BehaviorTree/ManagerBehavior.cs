@@ -1,4 +1,5 @@
 using System;
+using ItemResources;
 using UnityEngine;
 using Villanger.BehaviorTree.Settings;
 using Villanger.BehaviorTree.Tasks;
@@ -12,12 +13,15 @@ namespace Villanger.BehaviorTree
 
         [SerializeField] private FoodGatherable test_foodGatherging;
         [SerializeField] private GameObject test_sleepingPlace;
+        [SerializeField] private FlagStockpileBehaviour test_stockpile;
 
         [Serializable]
         public enum TaskType
         {
             GoEat,
             GoSleep,
+            GatherFood,
+            
             NULL
         }
 
@@ -51,7 +55,7 @@ namespace Villanger.BehaviorTree
         }
 
 
-        public void ChooseTask()
+        private void ChooseTask()
         {
             TaskType bestTask = TaskType.NULL;
             float bestValue = 0;
@@ -87,6 +91,7 @@ namespace Villanger.BehaviorTree
                     currentTask = new GoSleepBehavior(villagerBehaviour, test_sleepingPlace.transform.position);
                     currentTask.Start();
                     break;
+                
             }
         }
 

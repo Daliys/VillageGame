@@ -1,3 +1,4 @@
+using ItemResources;
 using Villanger.BehaviorTree.Tasks;
 
 namespace Villanger.BehaviorTree
@@ -8,13 +9,12 @@ namespace Villanger.BehaviorTree
         private readonly Sequence sequence;
 
         
-        public GoEatBehavior(VillagerBehaviour villagerBehaviour, IGatherable gatherableObject)
+        public GoEatBehavior(VillagerBehaviour villagerBehaviour, FoodGatherable gatherableObject)
         {
             sequence = new Sequence();
             
             sequence.AddTask(new MoveToTask(villagerBehaviour.GetAgent(),gatherableObject.GetPosition()));
-            sequence.AddTask(new GatherFoodTask(gatherableObject));
-            sequence.AddTask(new EatFoodTask());
+            sequence.AddTask(new GatherFoodTask(villagerBehaviour.GetVillagerInventory(),gatherableObject));
         }
         
         
