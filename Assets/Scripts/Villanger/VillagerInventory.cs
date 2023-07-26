@@ -17,16 +17,17 @@ namespace Villanger
             this.numberOfSlots = numberOfSlots;
 
         }
-        
+
 
         /// <summary>
         ///  Add an item to the inventory. If the item is already in the inventory, add the amount to the existing amount.
         /// </summary>
         /// <param name="item">the item to be added to the inventory  </param>
         /// <param name="amount">amount of the item to be added to the inventory</param>
-        public void AddItemToInventory(Item item, int amount)
+        /// <param name="space">the space each single item takes</param>
+        public void AddItemToInventory(Item item, int amount, int space)
         {
-            if (slotsTaken + amount <= numberOfSlots)
+            if (slotsTaken + amount * space <= numberOfSlots)
             {
                 if (inventory.ContainsKey(item))
                 {

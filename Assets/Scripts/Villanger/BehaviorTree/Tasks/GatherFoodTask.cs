@@ -27,7 +27,7 @@ namespace Villanger.BehaviorTree.Tasks
             base.Update();
             if (Time.time - startTime > 1)
             {
-                inventory.AddItemToInventory(foodGatherable.GetFoodItem(), foodGatherable.GetFoodAmount());
+                inventory.AddItemToInventory(foodGatherable.GetFoodItem(), foodGatherable.GetFoodAmount(), foodGatherable.GetFoodItemSpace());
                 End();
             }
         }
