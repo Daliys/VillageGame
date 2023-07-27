@@ -18,6 +18,7 @@ namespace Villanger.BehaviorTree.Tasks
         {
             base.Start();
             navMeshAgent.SetDestination(targetPosition);
+            Debug.Log("started moving to somewhere");
             
         }
 

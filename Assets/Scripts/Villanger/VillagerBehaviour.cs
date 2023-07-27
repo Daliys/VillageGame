@@ -67,7 +67,8 @@ namespace Villanger
         {
             if (target != null)
             {
-                agent.SetDestination(target.position);
+                // debugging phase for this finished, removed until if needed
+                //agent.SetDestination(target.position);
             }
             
         }
@@ -85,8 +86,10 @@ namespace Villanger
 
         private void OnCollisionEnter(Collision collision)
         {
+            Debug.Log("entered collision");
             if (collision.gameObject.transform == target)
             {
+                Debug.Log("im supposed to stop moving");
                 target = gameObject.transform;
             }
         }
