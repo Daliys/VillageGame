@@ -12,5 +12,11 @@ namespace ItemResources
         /// is going to take 1 space, but a rock is going to take 5 space per item.
         /// </summary>
         public int spaceTaken;
+
+        /// <summary>
+        /// The name of the item. (only really used in UIObjectInventory.cs but
+        /// will probably be used elsewhere later too)
+        /// </summary>
+        public string itemName;
     }
 }

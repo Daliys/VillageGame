@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using ItemResources;
-
+using UnityEngine;
 
 namespace Villanger
 {
@@ -10,14 +10,17 @@ namespace Villanger
         public readonly int numberOfSlots = 10;
         public int slotsTaken;
 
-        private readonly Dictionary<Item, int> inventory = new Dictionary<Item, int>();
+        /// <summary>
+        /// All items of the inventory. Public to access from outer scripts.
+        /// </summary>
+        public readonly Dictionary<Item, int> inventory = new Dictionary<Item, int>();
         
         public VillagerInventory(int numberOfSlots)
         {
             this.numberOfSlots = numberOfSlots;
 
         }
-
+        
 
         /// <summary>
         ///  Add an item to the inventory. If the item is already in the inventory, add the amount to the existing amount.
@@ -26,8 +29,10 @@ namespace Villanger
         /// <param name="amount">amount of the item to be added to the inventory</param>
         public void AddItemToInventory(Item item, int amount)
         {
+            Debug.Log("Detected item addition attempt");
             if (slotsTaken + amount * item.spaceTaken <= numberOfSlots)
             {
+                Debug.Log("Adding item with name " + item.itemName);
                 if (inventory.ContainsKey(item))
                 {
                     inventory[item] += amount;
