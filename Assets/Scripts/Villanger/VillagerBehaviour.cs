@@ -2,6 +2,7 @@ using ScriptableObjects;
 using UnityEngine;
 using UnityEngine.AI;
 using Random = UnityEngine.Random;
+using UI;
 
 namespace Villanger
 {
@@ -22,6 +23,7 @@ namespace Villanger
         private VillagerNeeds villagerNeeds;
         private VillagerInventory villagerInventory;
 
+        [SerializeField] private UIController uiController;
 
         private string name;
         private int age;
@@ -73,25 +75,9 @@ namespace Villanger
             
         }
 
-        /// <summary>
-        /// Proprietary function to find the closest object of a given tag. Used to
-        /// find, for example, the closest tree or the closest rock source or the closest
-        /// villager of the opposite gender, or the closest potential building plot, etc.
-        /// !! resource intensive !!
-        /// </summary>
-        /// <param name="tag">Tag to look up for.</param>
-        /// <returns>The closest gameobject with tag</returns>
-        
-
-
-        private void OnCollisionEnter(Collision collision)
+        private void OnMouseDown()
         {
-            Debug.Log("entered collision");
-            if (collision.gameObject.transform == target)
-            {
-                Debug.Log("im supposed to stop moving");
-                target = gameObject.transform;
-            }
+            uiController.ShowVillagerInformationPanel(this);
         }
 
 

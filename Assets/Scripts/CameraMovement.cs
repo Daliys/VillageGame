@@ -83,7 +83,7 @@ public class CameraMovement : MonoBehaviour
 
             transform.localRotation = xQuat * yQuat;
         }
-
+        /*
         if (Input.GetMouseButtonDown(0))
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -99,6 +99,6 @@ public class CameraMovement : MonoBehaviour
                     UIController.Instance.OnMissTap();
                 }
             }
-        }
+        }*/
     }
 }
