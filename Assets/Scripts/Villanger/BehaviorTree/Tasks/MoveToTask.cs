@@ -5,7 +5,7 @@ namespace Villanger.BehaviorTree.Tasks
 {
     public class MoveToTask : BehaviorTask
     {
-        private Vector3 targetPosition;
+        public Vector3 targetPosition;
         private NavMeshAgent navMeshAgent;
 
         public MoveToTask (NavMeshAgent navMeshAgent, Vector3 targetPosition)

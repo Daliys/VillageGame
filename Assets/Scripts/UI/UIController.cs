@@ -32,20 +32,17 @@ namespace UI
         
         public void OnMissTap()
         {
+            Debug.Log("misstap");
             // !! now the panels are to be closed with esc key because scrolling the inventory requires clicking
             // uiVillagerInformation.ClosePanel();
         }
 
         private void Update()
         {
-            if (Input.GetKey(KeyCode.Escape) && !uiObjectInventory.gameObject.activeSelf)
+            if (Input.GetKey(KeyCode.Escape))
             {
                 uiVillagerInformation.ClosePanel();
-            } else if (Input.GetKey(KeyCode.Escape) && uiObjectInventory.gameObject.activeSelf)
-            {
-
                 uiObjectInventory.ClosePanel();
-                
             }
 
             if (Input.GetKey(KeyCode.F) && !uiObjectInventory.gameObject.activeSelf && uiVillagerInformation.gameObject.activeSelf)
