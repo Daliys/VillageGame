@@ -977,6 +977,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   villagerNeedsSettings: {fileID: 11400000, guid: b454bcf55e85f445b99b01d9ea2948ac, type: 2}
+  uiController: {fileID: 106867313}
   gender: 0
   target: {fileID: 2047558495}
   agent: {fileID: 250846198}
@@ -2441,6 +2442,7 @@ MonoBehaviour:
   villageID: -5
   numberOfSlots: 20
   slotsTaken: 0
+  uiObjectInventory: {fileID: 1457551227}
 --- !u!43 &939127712
 Mesh:
   m_ObjectHideFlags: 0
