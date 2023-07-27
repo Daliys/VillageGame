@@ -1,4 +1,5 @@
 using System.Collections;
+using ItemResources;
 using ScriptableObjects;
 using UnityEngine;
 
@@ -56,12 +57,23 @@ namespace Villanger
             }
         }
         
-        
+        public void ConsumedFood(FoodItem foodItem, int amount)
+        {
+            foodValue += foodItem.foodValue * amount;
+            if (foodValue > maxValueOfNeeds)
+            {
+                foodValue = maxValueOfNeeds;
+            }
+            OnNeedsChanged?.Invoke(this);
+        }
+
         public float GetHealthValue() => healthValue;
         public float GetFoodValue() => foodValue;
         public float GetEnergyValue() => energyValue;
         public float GetMoodValue() => moodValue;
         public float GetSocialValue() => socialValue;
         public float GetMaxValueOfNeeds() => maxValueOfNeeds;
+        
+        public float GetAmountOfFoodNeeded() => maxValueOfNeeds - foodValue;
     }
 }

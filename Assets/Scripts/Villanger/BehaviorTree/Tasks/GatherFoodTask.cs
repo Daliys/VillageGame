@@ -1,4 +1,3 @@
-using System.Threading;
 using ItemResources;
 using UnityEngine;
 
@@ -24,10 +23,12 @@ namespace Villanger.BehaviorTree.Tasks
         
         public override void Update()
         {
+            if (!isRunning) return;
+            
             base.Update();
-            if (Time.time - startTime > 1)
+            if (startTime + foodGatherable.GetTimeToGather() < Time.time)
             {
-                inventory.AddItemToInventory(foodGatherable.GetFoodItem(), foodGatherable.GetFoodAmount(), foodGatherable.GetFoodItemSpace());
+                inventory.AddItemToInventory(foodGatherable.GetFoodItem(), foodGatherable.GetFoodAmount());
                 End();
             }
         }

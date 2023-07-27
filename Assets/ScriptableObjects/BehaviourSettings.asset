@@ -26,3 +26,11 @@ MonoBehaviour:
     - stat: 2
       invert: 1
       coefficient: 1
+  - taskType: 2
+    conditions:
+    - stat: 0
+      invert: 0
+      coefficient: 1
+    - stat: 2
+      invert: 0
+      coefficient: 1

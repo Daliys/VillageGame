@@ -23,6 +23,8 @@ namespace Villanger.BehaviorTree.Tasks
 
         public override void Update()
         {
+            if (!isRunning) return;
+            
             base.Update();
             if (navMeshAgent.remainingDistance <= navMeshAgent.stoppingDistance)
             {

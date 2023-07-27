@@ -26,15 +26,5 @@ namespace ItemResources
         {
             return 3;
         }
-
-        /// <summary>
-        /// To be reworked later to allow different foods to take up different inventory spaces.
-        /// The amount of space a food item takes up.
-        /// </summary>
-        /// <returns>1</returns>
-        public int GetFoodItemSpace()
-        {
-            return 1;
-        }
     }
 }

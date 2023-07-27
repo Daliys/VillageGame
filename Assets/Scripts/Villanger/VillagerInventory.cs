@@ -24,10 +24,9 @@ namespace Villanger
         /// </summary>
         /// <param name="item">the item to be added to the inventory  </param>
         /// <param name="amount">amount of the item to be added to the inventory</param>
-        /// <param name="space">the space each single item takes</param>
-        public void AddItemToInventory(Item item, int amount, int space)
+        public void AddItemToInventory(Item item, int amount)
         {
-            if (slotsTaken + amount * space <= numberOfSlots)
+            if (slotsTaken + amount * item.spaceTaken <= numberOfSlots)
             {
                 if (inventory.ContainsKey(item))
                 {
@@ -41,6 +40,46 @@ namespace Villanger
             }
         }
         
+     
+        public bool RemoveItemFromInventory(Item item, int amount)
+        {
+            if (!inventory.ContainsKey(item)) return false;
+            if (inventory[item] < amount) return false;
+            
+            inventory[item] -= amount;
+            slotsTaken -= amount;
+            
+            if (inventory[item] <= 0)
+            {
+                inventory.Remove(item);
+            }
+            
+            return true;
+        }
+        
+        public int GetAmountOfItem(Item item)
+        {
+            if (inventory.TryGetValue(item, out var ofItem))
+            {
+                return ofItem;
+            }
+            return 0;
+        }
+        
+        
+        public Dictionary<FoodItem, int> GetAllFoodItems() 
+        {
+            Dictionary<FoodItem, int> foodItems = new Dictionary<FoodItem, int>();
+            foreach (var item in inventory)
+            {
+                if (item.Key is FoodItem)
+                {
+                    foodItems.Add((FoodItem)item.Key, item.Value);
+                }
+            }
+            return foodItems;
+        }
+      
         
         
     }

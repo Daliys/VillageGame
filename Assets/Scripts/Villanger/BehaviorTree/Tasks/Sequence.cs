@@ -5,7 +5,7 @@ namespace Villanger.BehaviorTree.Tasks
 
     public class Sequence : BehaviorTask
     {
-        private List<BehaviorTask> tasks = new List<BehaviorTask>();
+        private readonly List<BehaviorTask> tasks = new List<BehaviorTask>();
         private int currentTaskIndex = 0;
 
         public void AddTask(BehaviorTask task)
@@ -45,7 +45,7 @@ namespace Villanger.BehaviorTree.Tasks
         public override void End()
         {
             base.End();
-            currentTaskIndex = 0;
+            
         }
     }
 

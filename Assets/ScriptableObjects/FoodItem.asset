@@ -13,3 +13,5 @@ MonoBehaviour:
   m_Name: FoodItem
   m_EditorClassIdentifier: 
   stackSize: 12
+  spaceTaken: 1
+  foodValue: 20
