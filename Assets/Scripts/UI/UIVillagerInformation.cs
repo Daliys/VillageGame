@@ -55,8 +55,7 @@ namespace UI
         {
             if(transform.gameObject.activeSelf == false) return;
 
-            // caused a null reference error for seemingly no reason, commented out until fixed
-            //_villager.GetVillagerNeeds().OnNeedsChanged -= UpdateNeeds;
+            _villager.GetVillagerNeeds().OnNeedsChanged -= UpdateNeeds;
             gameObject.SetActive(false);
         }
 

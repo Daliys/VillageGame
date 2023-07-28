@@ -1,9 +1,7 @@
 ﻿using UnityEngine;
-using System.Collections;
-using TMPro;
 using Villanger;
-using UnityEngine.UI;
 using ItemResources;
+using UI;
 
 public class UIObjectInventory : MonoBehaviour
 {
@@ -11,7 +9,7 @@ public class UIObjectInventory : MonoBehaviour
     private FlagStockpileBehaviour _stockpile;
     private VillagerBehaviour _villager;
     [SerializeField] private GameObject ItemFramePrefab;
-    private GameObject newItem;
+   
     [SerializeField] private GameObject InventoryUIParent;
     [SerializeField] private Item testItem;
 
@@ -28,53 +26,40 @@ public class UIObjectInventory : MonoBehaviour
 
         foreach (var item in _villager.GetVillagerInventory().inventory.Keys)
         {
-            // make as many item panels as there are individual items
-            for (int i = 0; i < _villager.GetVillagerInventory().inventory[item]; i++)
-            {
-                newItem = Instantiate(ItemFramePrefab);
-                newItem.transform.SetParent(InventoryUIParent.transform);
-                /*
-                if (item.itemName == "Apple")
-                {
-                    newItem.transform.Find("ObjectImage").GetComponent<Image>().sprite = appleImage;
-                }
-                */
-                // causing a null reference for no reason :arsenic:, removed until fixed
-                // newItem.transform.Find("ItemInfo").GetComponent<TextMeshPro>().text = "Name: " + item.itemName;
-            }
+            GameObject newItem = Instantiate(ItemFramePrefab, InventoryUIParent.transform, true);
+            newItem.GetComponent<UIObjectSlot>().InitializeSlot( item, _villager.GetVillagerInventory().inventory[item]);
         }
-
-
+        
     }
 
     public void InitializePanel(FlagStockpileBehaviour stockpile)
     {
-        //Sprite appleImage = Resources.Load<Sprite>("apple");
+        RemoveAllItems();
+        
         _stockpile = stockpile;
 
         foreach (var item in _stockpile.inventory.Keys)
         {
-            // make as many item panels as there are individual items
-            for (int i = 0; i < _stockpile.inventory[item]; i++)
-            {
-                newItem = Instantiate(ItemFramePrefab);
-                newItem.transform.SetParent(InventoryUIParent.transform);
-            }
+            GameObject newItem = Instantiate(ItemFramePrefab, InventoryUIParent.transform, true);
+            newItem.GetComponent<UIObjectSlot>().InitializeSlot(item, _stockpile.inventory[item]);
         }
-    } 
+    }
 
 
     public void ClosePanel()
     {
         if (transform.gameObject.activeSelf == false) return;
 
-        // get rid of old items
+        RemoveAllItems();
+        gameObject.SetActive(false);
+    }
+
+    private void RemoveAllItems()
+    {
         for (int i = 0; i < InventoryUIParent.transform.childCount; i++)
         {
             Destroy(InventoryUIParent.transform.GetChild(i).gameObject);
         }
-
-        gameObject.SetActive(false);
     }
 
 

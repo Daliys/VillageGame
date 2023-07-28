@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using ItemResources;
 using UnityEngine;
@@ -13,12 +14,11 @@ namespace Villanger
         /// <summary>
         /// All items of the inventory. Public to access from outer scripts.
         /// </summary>
-        public readonly Dictionary<Item, int> inventory = new Dictionary<Item, int>();
+        public readonly Dictionary<Item, int> inventory = new();
         
         public VillagerInventory(int numberOfSlots)
         {
             this.numberOfSlots = numberOfSlots;
-
         }
         
 
@@ -29,6 +29,11 @@ namespace Villanger
         /// <param name="amount">amount of the item to be added to the inventory</param>
         public void AddItemToInventory(Item item, int amount)
         {
+            if (item == null)
+            {
+                throw new NullReferenceException("Item is null");
+            }
+
             Debug.Log("Detected item addition attempt");
             if (slotsTaken + amount * item.spaceTaken <= numberOfSlots)
             {

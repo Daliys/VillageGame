@@ -24,6 +24,8 @@ namespace UI
         
         public void ShowVillagerInformationPanel(VillagerBehaviour villager)
         {
+            if(uiVillagerInformation.gameObject.activeSelf) uiVillagerInformation.ClosePanel();
+            
             _villager = villager;
             uiVillagerInformation.gameObject.SetActive(true);
             uiVillagerInformation.InitializePanel(villager);

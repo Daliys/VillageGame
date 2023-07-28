@@ -16,7 +16,6 @@ public class FlagStockpileBehaviour : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        inventory.Add(new FoodItem(), 3);
     }
 
     // Update is called once per frame
@@ -61,12 +60,7 @@ public class FlagStockpileBehaviour : MonoBehaviour
         uiObjectInventory.gameObject.SetActive(true);
         uiObjectInventory.InitializePanel(this);
     }
-
-
-
-
-
-
+    
 
     public Vector3 GetPosition()
     {
