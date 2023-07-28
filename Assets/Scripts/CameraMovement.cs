@@ -83,7 +83,8 @@ public class CameraMovement : MonoBehaviour
 
             transform.localRotation = xQuat * yQuat;
         }
-        /*if (Input.GetMouseButtonDown(0))
+        /*
+        if (Input.GetMouseButtonDown(0))
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
@@ -93,10 +94,12 @@ public class CameraMovement : MonoBehaviour
                 if (hit.transform.CompareTag("Villager"))
                 {
                     print("HIT VILLAGER ");
-                   // UIController.Instance.ShowVillagerInformationPanel(hit.transform.GetComponent<VillagerBehaviour>());
+                    Debug.Log(hit);
+                    // UIController.Instance.ShowVillagerInformationPanel(hit.transform.GetComponent<VillagerBehaviour>());
                 }
                 else
                 {
+                    Debug.Log(hit);
                     //UIController.Instance.OnMissTap();
                 }
             }

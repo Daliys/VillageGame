@@ -47,12 +47,21 @@ namespace UI
                 uiObjectInventory.ClosePanel();
             }
 
-            if (Input.GetKey(KeyCode.F) && !uiObjectInventory.gameObject.activeSelf && uiVillagerInformation.gameObject.activeSelf)
+            if (Input.GetKeyDown(KeyCode.F))
             {
-                uiObjectInventory.gameObject.SetActive(true);
-                uiObjectInventory.InitializePanel(_villager);
-                
+                if (!uiObjectInventory.gameObject.activeSelf && uiVillagerInformation.gameObject.activeSelf)
+                {
+                    uiObjectInventory.gameObject.SetActive(true);
+                    uiObjectInventory.InitializePanel(_villager);
+                }
+                else if (uiObjectInventory.gameObject.activeSelf)
+                {
+                    uiObjectInventory.ClosePanel();
+
+                }
             }
+            
+           
         }
     }
 }

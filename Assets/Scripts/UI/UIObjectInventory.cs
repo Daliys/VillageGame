@@ -29,6 +29,8 @@ public class UIObjectInventory : MonoBehaviour
             GameObject newItem = Instantiate(ItemFramePrefab, InventoryUIParent.transform, true);
             newItem.GetComponent<UIObjectSlot>().InitializeSlot( item, _villager.GetVillagerInventory().inventory[item]);
         }
+
+
         
     }
 
