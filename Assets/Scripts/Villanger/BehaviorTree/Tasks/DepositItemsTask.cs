@@ -1,15 +1,14 @@
-﻿using ItemResources;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Villanger.BehaviorTree.Tasks
 {
     public class DepositItemsTask : BehaviorTask
     {
         private VillagerInventory villagerInventory;
-        private FlagStockpileBehaviour stockpile;
+        private StockpileInventory stockpile;
         private float startTime;
 
-        public DepositItemsTask(VillagerInventory villagerInventory, FlagStockpileBehaviour stockpile)
+        public DepositItemsTask(VillagerInventory villagerInventory, StockpileInventory stockpile)
         {
             this.villagerInventory = villagerInventory;
             this.stockpile = stockpile;
@@ -27,12 +26,16 @@ namespace Villanger.BehaviorTree.Tasks
 
             base.Update();
             // i forgot what condition i wanted to put here
+            // TODO here should be timer 
             if (true)
             {
                 foreach(var item in villagerInventory.inventory.Keys)
                 {
-                    stockpile.AddItemToInventory(item, villagerInventory.inventory[item]);
-                    villagerInventory.RemoveItemFromInventory(item, villagerInventory.inventory[item]);
+                    // if item was added to stockpile
+                    if (stockpile.AddItemToInventory(item, villagerInventory.inventory[item]))
+                    {
+                        villagerInventory.RemoveItemFromInventory(item, villagerInventory.inventory[item]);
+                    }
                 }
                 
                 End();

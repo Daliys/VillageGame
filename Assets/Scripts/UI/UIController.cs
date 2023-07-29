@@ -1,3 +1,5 @@
+using System;
+using TMPro;
 using UnityEngine;
 using Villanger;
 
@@ -10,7 +12,8 @@ namespace UI
     {
         [SerializeField] private UIVillagerInformation uiVillagerInformation;
         [SerializeField] private UIObjectInventory uiObjectInventory;
-
+        [SerializeField] private TextMeshProUGUI gameSpeedText;
+        
         private VillagerBehaviour _villager;
 
         public static UIController Instance;
@@ -19,6 +22,10 @@ namespace UI
         private void Awake()
         {
             Instance = this;
+            // make a string format fot text in format "x1.0"
+            
+
+      UpdateTimeSpeed();
         }
         
         
@@ -60,8 +67,27 @@ namespace UI
 
                 }
             }
+
+            if (Input.GetKeyDown(KeyCode.Z))
+            {
+                Time.timeScale = Time.timeScale <= 1f? 1f : Time.timeScale - 1f;
+                UpdateTimeSpeed();
+            }
+
+            if (Input.GetKeyDown(KeyCode.X))
+            {
+                Time.timeScale = Time.timeScale >= 10f? 10f : Time.timeScale + 1f;
+                UpdateTimeSpeed();
+            }
+            
+            
             
            
+        }
+
+        private void UpdateTimeSpeed()
+        {
+            gameSpeedText.text = $"x{Time.timeScale:0.0}";
         }
     }
 }

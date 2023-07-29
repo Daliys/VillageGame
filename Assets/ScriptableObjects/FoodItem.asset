@@ -15,4 +15,5 @@ MonoBehaviour:
   stackSize: 12
   spaceTaken: 1
   itemName: Apple
+  sprite: {fileID: 21300000, guid: 76c777e8f2f73452d9402b1def0c2c0e, type: 3}
   foodValue: 20

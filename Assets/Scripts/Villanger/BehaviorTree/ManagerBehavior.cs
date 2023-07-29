@@ -63,7 +63,7 @@ namespace Villanger.BehaviorTree
             string str = "";
             foreach (BehaviourSettingsTask task in settings.tasks)
             {
-                float conditionValue = task.conditions[0].GetValue(villagerBehaviour);
+                float conditionValue = task.CalculateTaskValue(villagerBehaviour);
                 str += task.taskType + " " + conditionValue + "\n";
             }
             str += "current task: " + currentTask + " " + currentTask?.IsRunning();
@@ -77,11 +77,11 @@ namespace Villanger.BehaviorTree
         private void ChooseTask()
         {
             TaskType bestTask = TaskType.NULL;
-            float bestValue = 0;
+            float bestValue = Mathf.NegativeInfinity;
 
             foreach (BehaviourSettingsTask task in settings.tasks)
             {
-                float conditionValue = task.conditions[0].GetValue(villagerBehaviour);
+                float conditionValue = task.CalculateTaskValue(villagerBehaviour);
                 if (conditionValue > bestValue)
                 {
                     bestValue = conditionValue;

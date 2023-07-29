@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: VillangerNeeds
   m_EditorClassIdentifier: 
   foodDecreaseRate: 0.3
-  energyDecreaseRate: 0.1
+  energyDecreaseRate: 0.2
   moodDecreaseRate: 0.05
   socialDecreaseRate: 0.01

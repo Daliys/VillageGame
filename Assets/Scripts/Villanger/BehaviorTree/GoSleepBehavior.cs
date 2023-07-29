@@ -14,7 +14,7 @@ namespace Villanger.BehaviorTree
             sequence = new Sequence();
             
             sequence.AddTask(new MoveToTask(villagerBehaviour.GetAgent(),position));
-            sequence.AddTask(new SleepTask());
+            sequence.AddTask(new SleepTask(villagerBehaviour));
         }
      
         

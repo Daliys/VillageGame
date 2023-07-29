@@ -15,6 +15,7 @@ namespace Villanger.BehaviorTree
                 sequence.AddTask(new MoveToTask(villagerBehaviour.GetAgent(),gatherableObject.GetPosition()));
                 sequence.AddTask(new GatherFoodTask(villagerBehaviour.GetVillagerInventory(),gatherableObject));
                 sequence.AddTask(new MoveToTask(villagerBehaviour.GetAgent(), stockpile.GetPosition()));
+                sequence.AddTask(new DepositItemsTask(villagerBehaviour.GetVillagerInventory(),stockpile.stockpileInventory));
             }
             
             public override void Start()

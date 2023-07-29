@@ -66,7 +66,23 @@ namespace Villanger
             }
             OnNeedsChanged?.Invoke(this);
         }
+        
+        public void RestoreEnergy (float amount)
+        {
+            energyValue += amount;
+            if (energyValue > maxValueOfNeeds)
+            {
+                energyValue = maxValueOfNeeds;
+            }
+            OnNeedsChanged?.Invoke(this);
+        }
 
+        public float GetSleepTime()
+        {
+            //TODO : Change this to a better formula or settings
+            return 10f;
+        }
+        
         public float GetHealthValue() => healthValue;
         public float GetFoodValue() => foodValue;
         public float GetEnergyValue() => energyValue;

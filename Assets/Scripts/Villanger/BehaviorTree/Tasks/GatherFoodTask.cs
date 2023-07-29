@@ -28,7 +28,10 @@ namespace Villanger.BehaviorTree.Tasks
             base.Update();
             if (startTime + foodGatherable.GetTimeToGather() < Time.time)
             {
-                inventory.AddItemToInventory(foodGatherable.GetFoodItem(), foodGatherable.GetFoodAmount());
+                if (!inventory.AddItemToInventory(foodGatherable.GetFoodItem(), foodGatherable.GetFoodAmount()))
+                {
+                    throw  new System.Exception("Inventory is full");
+                }
                 End();
             }
         }

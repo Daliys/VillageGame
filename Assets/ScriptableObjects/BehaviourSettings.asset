@@ -17,15 +17,15 @@ MonoBehaviour:
     conditions:
     - stat: 0
       invert: 1
-      coefficient: 1
+      coefficient: 1.5
   - taskType: 1
     conditions:
     - stat: 0
       invert: 1
-      coefficient: -1
+      coefficient: -0.5
     - stat: 2
       invert: 1
-      coefficient: 1
+      coefficient: 1.5
   - taskType: 2
     conditions:
     - stat: 0
