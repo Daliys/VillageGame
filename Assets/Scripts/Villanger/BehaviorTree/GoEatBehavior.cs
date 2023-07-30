@@ -17,7 +17,7 @@ namespace Villanger.BehaviorTree
             sequence = new Sequence();
 
             sequence.AddTask(new MoveToTask(villagerBehaviour.GetAgent(), gatherableObject.GetPosition()));
-            sequence.AddTask(new GatherFoodTask(villagerBehaviour.GetVillagerInventory(), gatherableObject));
+            sequence.AddTask(new GatherFoodTask(villagerBehaviour, gatherableObject));
         }
 
 

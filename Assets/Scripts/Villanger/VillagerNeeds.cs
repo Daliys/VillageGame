@@ -32,7 +32,7 @@ namespace Villanger
             
             healthValue = 100f;
             foodValue = 100f;
-            energyValue = 100f;
+            energyValue = 00f;
             moodValue = 100f;
             socialValue = 100f;
         }

@@ -5,13 +5,13 @@ namespace Villanger.BehaviorTree.Tasks
 {
     public class GatherFoodTask : BehaviorTask
     {
-        private VillagerInventory inventory;
+        private VillagerBehaviour villagerBehaviour;
         private FoodGatherable foodGatherable;
         private float startTime;
 
-        public GatherFoodTask(VillagerInventory inventory, FoodGatherable foodGatherable)
+        public GatherFoodTask(VillagerBehaviour villagerBehaviour, FoodGatherable foodGatherable)
         {
-            this.inventory = inventory;
+            this.villagerBehaviour = villagerBehaviour;
             this.foodGatherable = foodGatherable;
         }
         
@@ -19,6 +19,7 @@ namespace Villanger.BehaviorTree.Tasks
         {
             base.Start();
             startTime = Time.time;
+            villagerBehaviour.GetVillagerAnimation().SetTakingItemAnimation(true);
         }
         
         public override void Update()
@@ -28,7 +29,7 @@ namespace Villanger.BehaviorTree.Tasks
             base.Update();
             if (startTime + foodGatherable.GetTimeToGather() < Time.time)
             {
-                if (!inventory.AddItemToInventory(foodGatherable.GetFoodItem(), foodGatherable.GetFoodAmount()))
+                if (!villagerBehaviour.GetVillagerInventory().AddItemToInventory(foodGatherable.GetFoodItem(), foodGatherable.GetFoodAmount()))
                 {
                     throw  new System.Exception("Inventory is full");
                 }
@@ -39,7 +40,7 @@ namespace Villanger.BehaviorTree.Tasks
         public override void End()
         {
             base.End();
-            
+            villagerBehaviour.GetVillagerAnimation().SetTakingItemAnimation(false);
         }
         
     }

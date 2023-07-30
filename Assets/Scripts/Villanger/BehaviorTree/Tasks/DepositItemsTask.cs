@@ -4,13 +4,13 @@ namespace Villanger.BehaviorTree.Tasks
 {
     public class DepositItemsTask : BehaviorTask
     {
-        private VillagerInventory villagerInventory;
-        private StockpileInventory stockpile;
+        private readonly VillagerBehaviour villagerBehaviour;
+        private readonly StockpileInventory stockpile;
         private float startTime;
 
-        public DepositItemsTask(VillagerInventory villagerInventory, StockpileInventory stockpile)
+        public DepositItemsTask(VillagerBehaviour villagerBehaviour, StockpileInventory stockpile)
         {
-            this.villagerInventory = villagerInventory;
+            this.villagerBehaviour = villagerBehaviour;
             this.stockpile = stockpile;
         }
 
@@ -18,6 +18,7 @@ namespace Villanger.BehaviorTree.Tasks
         {
             base.Start();
             startTime = Time.time;
+            villagerBehaviour.GetVillagerAnimation().SetPuttingItemAnimation(true);
         }
 
         public override void Update()
@@ -25,19 +26,10 @@ namespace Villanger.BehaviorTree.Tasks
             if (!isRunning) return;
 
             base.Update();
-            // i forgot what condition i wanted to put here
-            // TODO here should be timer 
-            if (true)
+            
+            //TODO move constant to a variable 
+            if (startTime + 5 < Time.time)
             {
-                foreach(var item in villagerInventory.inventory.Keys)
-                {
-                    // if item was added to stockpile
-                    if (stockpile.AddItemToInventory(item, villagerInventory.inventory[item]))
-                    {
-                        villagerInventory.RemoveItemFromInventory(item, villagerInventory.inventory[item]);
-                    }
-                }
-                
                 End();
             }
         }
@@ -45,7 +37,16 @@ namespace Villanger.BehaviorTree.Tasks
         public override void End()
         {
             base.End();
-
+            villagerBehaviour.GetVillagerAnimation().SetPuttingItemAnimation(false);
+            
+            foreach(var item in villagerBehaviour.GetVillagerInventory().inventory.Keys)
+            {
+                // if item was added to stockpile
+                if (stockpile.AddItemToInventory(item, villagerBehaviour.GetVillagerInventory().inventory[item]))
+                {
+                    villagerBehaviour.GetVillagerInventory().RemoveItemFromInventory(item, villagerBehaviour.GetVillagerInventory().inventory[item]);
+                }
+            }
         }
 
     }

@@ -1,3 +1,4 @@
+using System;
 using ScriptableObjects;
 using UnityEngine;
 using UnityEngine.AI;
@@ -19,16 +20,23 @@ namespace Villanger
     {
         [SerializeField] private VillagerNeedsSettings villagerNeedsSettings;
     
+        [SerializeField] private UIController uiController;
+        [SerializeField] private Animator animator;
+
+        [SerializeField] private Transform target;
+        [SerializeField] private NavMeshAgent agent;
+
+        
         private bool isActive = true;
         private VillagerNeeds villagerNeeds;
         private VillagerInventory villagerInventory;
-
-        [SerializeField] private UIController uiController;
 
         private string name;
         private int age;
         
         public Gender gender = Gender.female;
+        
+     VillagerAnimation villagerAnimation;
 
         public enum Gender
         {
@@ -36,15 +44,12 @@ namespace Villanger
             male
         }
 
-        [SerializeField] private Transform target;
-        [SerializeField] private NavMeshAgent agent;
-        
-        
         private void Awake()
         {
             villagerNeeds = new VillagerNeeds( this, villagerNeedsSettings );
             villagerNeeds.Initialize();
             villagerInventory = new VillagerInventory(10);
+            villagerAnimation = new VillagerAnimation (animator, agent);
         }
 
         // Start is called before the first frame update
@@ -64,15 +69,9 @@ namespace Villanger
 
         }
 
-        // Update is called once per frame
-        void Update()
+        private void Update()
         {
-            if (target != null)
-            {
-                // debugging phase for this finished, removed until if needed
-                //agent.SetDestination(target.position);
-            }
-            
+            villagerAnimation.Update();   
         }
 
         private void OnMouseDown()
@@ -141,6 +140,7 @@ namespace Villanger
 
         public VillagerNeeds GetVillagerNeeds() => villagerNeeds;
         public VillagerInventory GetVillagerInventory() => villagerInventory;
+         public VillagerAnimation GetVillagerAnimation() => villagerAnimation;
         public bool GetIsActive() => isActive;
         public string GetName() => name;
         public int GetAge() => age;
