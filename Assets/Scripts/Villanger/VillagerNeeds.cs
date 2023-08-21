@@ -57,9 +57,10 @@ namespace Villanger
             }
         }
         
-        public void ConsumedFood(FoodItem foodItem, int amount)
+        public void ConsumeFood(FoodItem foodItem, int amount)
         {
             foodValue += foodItem.foodValue * amount;
+            Debug.Log("Food value:" + foodValue + "food that needs to be added: " + foodItem.foodValue);
             if (foodValue > maxValueOfNeeds)
             {
                 foodValue = maxValueOfNeeds;

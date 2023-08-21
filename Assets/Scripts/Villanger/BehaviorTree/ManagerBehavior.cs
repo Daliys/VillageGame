@@ -103,7 +103,7 @@ namespace Villanger.BehaviorTree
             switch (taskType)
             {
                 case TaskType.GoEat:
-                    currentTask = new GoEatBehavior(villagerBehaviour, test_foodGatherging);
+                    currentTask = new GoEatBehavior(villagerBehaviour, test_foodGatherging, test_stockpile);
                     currentTask.Start();
                     break;
                 case TaskType.GoSleep:
