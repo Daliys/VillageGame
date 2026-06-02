@@ -1,0 +1,156 @@
+Guest AI Architecture — Concept & Implementation Guide
+
+
+We need NPC “guests” with believable, varied behavior in a tavern/restaurant game. Their core journey is predictable (arrive, sit, order, wait, eat, react, leave), but each guest’s personality should change how they behave (follow the waiter, chat with neighbors, or if it enemy it should start fighting or leave, panic on mistakes, etc.). The system must be:
+	•	Easy to understand and maintain
+	•	Data-driven (tune in assets, not code changes)
+	•	Extensible (new behaviors/personas without refactoring)
+	•	Safe under concurrency (parallel activities like chatting while waiting)
+
+
+ Personas (Data, not code)
+
+Each guest has a Persona Profile (ScriptableObject) that defines:
+	•	Which Wait behavior to use (one at a time)
+	•	Which Parallel activities can run (zero or more)
+	•	Which Reactions to trigger on specific events (e.g., wrong order, etc)
+	•	Tuning parameters (patience budget, decay rate, durations, cooldowns, multipliers, etc)
+
+Example persona intent:
+	•	Wait behavior: Follow Waiter
+	•	Parallel activities: Chat With Neighbor, Check Phone (but for parralles activities is chanse or\and check state (for exaple type of neighbor)) 
+	•	Wrong order reaction: Cry, Scream, Run Around, Then Leave
+	•	Numbers: base patience 60s, chat adds +20% to allowed wait time, phone check every ~12s
+
+
+Behavior Categories (what plugs into states)
+	•	Wait Behavior (one active during Wait): how the guest behaves while waiting.
+	•	Examples: Passive Sit, Follow Assigned Waiter, Pace Near Table.
+	•	Parallel Activities (optional, many): habits running alongside the main behavior.
+	•	Examples: Chat With Neighbor, Check Phone, Fidget/Look Around.
+	•	These can temporarily modify timing (see Modifier Stack).
+	•	Reactions (event-driven, one-shot):
+	•	Examples: Wrong order → Cry/Scream/Run, Complain To Staff, Leave Silently.
+
+ Modifier Stack (safe way to change timing)
+
+Parallel activities may influence patience/timeout without hard-coding special cases.
+We use a small Modifier Stack of named multipliers that the state reads each tick:
+	•	While Chat With Neighbor runs, push waitBudget × 1.2 (i.e., +20% allowed wait).
+When chat ends, pop it.
+	•	Alternatively, modify patience decay instead (e.g., ×0.83) — both model “chat makes waiting feel shorter.”
+
+This keeps effects localized and prevents double-counting or leaks.
+
+ Services (do the actual work)
+
+Behaviors and states don’t rummage through the scene; they call Services with clean APIs:
+	•	Navigation (move/stop, follow positions)
+	•	Animation (play/queue anims)
+	•	Dialogue/Barks (trigger voice/text lines)
+	•	Reputation (add/reduce tavern reputation)
+	•	Seating (request/release seats)
+	•	Kitchen (orders, “meal ready?” queries)
+	•	World Query (find neighbors at table, crowd level, etc.)
+	etc
+
+This separation makes behaviors tiny and reusable.
+
+ Concurrency Model (how “chat while waiting” works)
+	•	Wait State is active and owns the patience math.
+	•	It runs the chosen Wait Behavior (e.g., “Follow Waiter”) and also ticks Parallel Activities (e.g., “Chat”).
+	•	When “Chat” starts, it pushes a timing modifier (+20% budget). When done or interrupted (neighbor leaves), it pops it.
+	•	The state reads the current modifiers each tick to compute effective patience/timeout. No spaghetti flags.
+
+ Utility Monitor (optional preemption)
+
+A lightweight monitor (runs alongside everything) can request state changes when priorities shift:
+	•	Patience too low? → transition from Wait to ExitWait.
+	•	Emergency event? → preempt to Panic/Leave.
+This replaces complicated behavior-tree aborts with a simple, explicit request to the HFSM.
+
+ Typical Frame (during Wait)
+	1.	Utility monitor samples urgency (optional).
+	2.	Wait State:
+	•	Reads Modifier Stack → computes effective patience budget / decay.
+	•	Ticks Parallel Activities (e.g., Chat; may push/pop modifiers).
+	•	Ticks Wait Behavior (e.g., Follow Waiter).
+	•	Asks Kitchen: is meal ready? If yes → switch to Served.
+	•	Updates patience. If patience ≤ 0 → switch to ExitWait.
+
+ Example Scenarios
+
+A) “Chat adds +20% to wait”
+	•	Persona includes Act:ChatNeighbor.
+	•	While neighbor present, the activity runs and applies waitBudget × 1.2.
+	•	Wait State’s patience logic uses that multiplier. Net: the guest tolerates 20% longer wait.
+	•	When chat ends (time up or neighbor gone), the multiplier is removed.
+
+B) “Needy follower”
+	•	Persona selects Wait:FollowWaiter.
+	•	The Wait Behavior keeps guest near their assigned waiter, occasionally asking, “Is my order ready?”
+	•	If patience falls too low, Utility Monitor triggers ExitWait.
+
+C) “Wrong order meltdown”
+	•	When food is judged “wrong”, the Reaction from persona fires:
+	•	Play cry/scream, run around, reduce tavern reputation once, then transition to Leave.
+
+13) Extending the System (no refactor)
+
+To add a new behavior:
+	1.	Implement a new behavior class and give it a unique key (e.g., Act:StartSmallTalk).
+	2.	Designers add that key to any Persona’s list (and tune numbers in the Persona).
+	3.	Done. The state will automatically load and run it; Services provide the needed actions.
+
+No factories to edit, no switch-cases, no touching the state machine.
+
+ Responsibilities Summary (who owns what)
+	•	HFSM (states): decides when things happen; clean transitions; one-shot effects.
+	•	Behaviors/Activities: decide how the guest acts in a given state; may apply temporary modifiers.
+	•	Reactions: one-shot responses to events (e.g., wrong order).
+	•	Services: world interactions (move, animate, talk, rep, kitchen, seats, queries).
+	•	Persona: data source selecting behaviors by key + tuning numbers.
+	•	Strategy Registry: resolves keys → behavior classes.
+	•	Modifier Stack: the safe, centralized way to alter timing during side activities.
+
+ Debugging & Tuning
+	•	Log state entry/exit and reasons (“Wait → Served: meal ready”).
+	•	Log activity start/stop and modifiers applied (“Chat +20% wait for 6s”).
+	•	Throttle on-screen debug to avoid GC churn.
+	•	Keep all numbers in Personas (or shared config assets) for quick iteration.
+
+ Non-Goals (to keep scope sane—for now)
+	•	Not modeling open-ended planning (GOAP). If goals explode (stealing meals, bar fights, queuing systems), we can layer a planner above the HFSM later.
+	•	Not using heavy behavior-tree aborts; HFSM + monitor keeps preemption simpler.
+
+17) Acceptance Criteria
+	•	Swapping a guest’s personality requires only editing a Persona asset (change behavior keys and numbers).
+	•	Adding a new behavior requires no changes to the HFSM or existing behaviors—only a new behavior class and a unique key.
+	•	“Chat while waiting extends patience” is implemented via the Modifier Stack, not custom branches in state logic.
+	•	Debug logs clearly show current state, active behaviors, any modifiers, and transition reasons.
+
+
+public class NavigationService : MonoBehaviour
+{
+    public void MoveToPosition(Guest guest, Vector3 position)
+    {
+        // Move the guest to this position
+        guest.GetComponent<NavMeshAgent>().SetDestination(position);
+    }
+    
+    public void FollowTarget(Guest guest, Transform target, float distance)
+    {
+        // Make guest follow the target
+        Vector3 followPos = target.position - target.forward * distance;
+        guest.GetComponent<NavMeshAgent>().SetDestination(followPos);
+    }
+}
+
+// One service for animations
+public class AnimationService : MonoBehaviour 
+{
+    public void PlayAnimation(Guest guest, string animName)
+    {
+        guest.GetComponent<Animator>().Play(animName);
+    }
+}
